@@ -1,0 +1,15 @@
+{
+  "configurations": [
+    {
+      "console": "integratedTerminal",
+      "request": "launch",
+      "justMyCode": true,
+      "python": "${workspaceFolder}\\.venv\\Scripts\\python.exe",
+      "program": "${file}",
+      "name": "Python: 현재 파일 (CV 가상환경)",
+      "type": "debugpy",
+      "cwd": "${fileDirname}"
+    }
+  ],
+  "version": "0.2.0"
+}
