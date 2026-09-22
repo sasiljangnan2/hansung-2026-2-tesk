@@ -12,39 +12,8 @@ public class ClientEx {
 			socket = new Socket("localhost", 9999); // 클라이언트 소켓 생성. 서버와 바로 연결
 			in = new BufferedReader(new InputStreamReader(socket.getInputStream())); // 소켓 입력 스트림
 			out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())); // 소켓 출력 스트림
-			// 수신은 별도 스레드에서 실행하고, 메인 스레드는 송신을 담당
-			final BufferedReader receiveIn = in;
-			final Socket receiveSocket = socket;
-			Runnable receiver = new Runnable() {
-				@Override
-				public void run() {
-					try {
-						while (true) {
-							String inputMessage = receiveIn.readLine(); // 상대방으로부터 한 행 수신
-							if (inputMessage == null || inputMessage.equalsIgnoreCase("bye") || inputMessage.equalsIgnoreCase("끝")) {
-								System.out.println("접속을 종료합니다.");
-								break;
-							}
-							System.out.println("서버: " + inputMessage); // 받은 메시지를 화면에 출력
-							System.out.print(">>");
-						}
-					} catch (IOException e) {
-						if (!receiveSocket.isClosed()) System.out.println(e.getMessage());
-					} finally {
-						try {
-							receiveSocket.close();
-						} catch (IOException e) {
-							System.out.println(e.getMessage());
-						}
-						// 메인 스레드가 키보드 입력 대기 중이어도 프로그램 종료
-						System.exit(0);
-					}
-				}
-			};
-			Thread receiveThread = new Thread(receiver);
-			receiveThread.start();
 			while (true) {
-				System.out.print(">>"); 
+				System.out.print("텍스트 입력>>"); // 프롬프트
 				String outputMessage = scanner.nextLine(); // 키보드에서 한 행 읽기
 				if (outputMessage.equalsIgnoreCase("bye") || outputMessage.equalsIgnoreCase("끝")) { // 사용자가 "bye", 끝을 입력하면 연결 종료
 					System.out.println("연결을 종료합니다."); // 종료 메시지 출력
@@ -55,6 +24,9 @@ public class ClientEx {
 
 				out.write(outputMessage + "\n"); // 키보드에서 읽은 문자열 전송
 				out.flush();
+				String inputMessage = in.readLine(); // 서버로부터 한 행 수신
+				System.out.println("서버: " + inputMessage); // 서버로부터 받은 메시지를 화면에 출력
+				//서버에서 클라이언트로 메시지를 보내는 부분은 주석처리해 메시지만 보내도록 수정
 			}
 		} catch (IOException e) {
 			System.out.println(e.getMessage());

@@ -1,0 +1,8 @@
+{
+  "terminal.integrated.defaultProfile.windows": "Command Prompt",
+  "python.defaultInterpreterPath": "${workspaceFolder}/컴퓨터비전/.venv/Scripts/python.exe",
+  "python.terminal.activateEnvironment": true,
+  "python.terminal.executeInFileDir": false,
+  "terminal.integrated.cwd": "${workspaceFolder}",
+  "jupyter.notebookFileRoot": "${workspaceFolder}"
+}

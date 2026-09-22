@@ -1,0 +1,74 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "ClientEx",
+      "request": "launch",
+      "mainClass": "ClientEx",
+      "console": "integratedTerminal",
+      "projectName": "hansung-2026-2-tesk_ce15e27"
+    },
+    {
+      "type": "java",
+      "name": "TestClient36",
+      "request": "launch",
+      "mainClass": "TestClient36",
+      "projectName": "hansung-2026-2-tesk_ce15e27"
+    },
+    {
+      "type": "java",
+      "name": "TestServer",
+      "request": "launch",
+      "mainClass": "TestServer",
+      "projectName": "hansung-2026-2-tesk_ce15e27"
+    },
+    {
+      "type": "java",
+      "name": "Java: 현재 파일 (네트워크 프로그래밍)",
+      "request": "launch",
+      "mainClass": "${file}",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}/네트워크프로그래밍"
+    },
+    {
+      "type": "java",
+      "name": "TestServer2",
+      "request": "launch",
+      "mainClass": "TestServer2",
+      "projectName": "hansung-2026-2-tesk_ce15e27"
+    },
+    {
+      "type": "java",
+      "name": "ServerEx",
+      "request": "launch",
+      "mainClass": "ServerEx",
+      "console": "integratedTerminal",
+      "projectName": "hansung-2026-2-tesk_ce15e27"
+    },
+    {
+      "type": "java",
+      "name": "TestClient",
+      "request": "launch",
+      "mainClass": "TestClient",
+      "projectName": "hansung-2026-2-tesk_ce15e27"
+    },
+    {
+      "type": "java",
+      "name": "TestServer5",
+      "request": "launch",
+      "mainClass": "TestServer5",
+      "projectName": "hansung-2026-2-tesk_ce15e27"
+    },
+    {
+      "name": "Python: 현재 파일 (컴퓨터 비전)",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${file}",
+      "python": "${workspaceFolder}/컴퓨터비전/.venv/Scripts/python.exe",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}",
+      "justMyCode": true
+    }
+  ]
+}
