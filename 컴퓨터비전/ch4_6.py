@@ -32,3 +32,13 @@ cv.imshow("Normalized Cut", cv.cvtColor(ncut_img, cv.COLOR_RGB2BGR))
 cv.waitKey()
 
 cv.destroyAllWindows()
+
+#%%
+
+dst=np.zeros_like(img)
+mask=(ncut==120)
+dst[mask]=img[mask]
+cv.imshow("Cut", cv.cvtColor(dst, cv.COLOR_RGB2BGR))
+cv.waitKey()
+
+cv.destroyAllWindows()
