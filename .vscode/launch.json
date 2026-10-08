@@ -3,6 +3,20 @@
   "configurations": [
     {
       "type": "java",
+      "name": "ChatClient",
+      "request": "launch",
+      "mainClass": "ChatClient",
+      "projectName": "hansung-2026-2-tesk_f4daf5f7"
+    },
+    {
+      "type": "java",
+      "name": "ChatServer",
+      "request": "launch",
+      "mainClass": "ChatServer",
+      "projectName": "hansung-2026-2-tesk_f4daf5f7"
+    },
+    {
+      "type": "java",
       "name": "ClientEx",
       "request": "launch",
       "mainClass": "ClientEx",
