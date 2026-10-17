@@ -5,6 +5,36 @@ Created on Mon Sep 11 14:04:24 2023
 @author: BigData
 """
 
+# ==================================================================
+# [선행 이론] 구조 요소로 영역의 모양을 다루는 원리
+# 근거: 3장 영상처리_2 2~10쪽
+# 읽는 순서: 선행 이론 → 관련 코드 앞의 서술형 요약 → 계산·출력 주석.
+# PPT의 배경 이론과 현재 코드의 구현 범위를 구분하여 공부한다.
+#
+# 1. 모폴로지와 구조 요소
+# 모폴로지는 영역을 픽셀 집합으로 보고 구조 요소(structuring element)를 옮기며 모양을 처리한다.
+# 원영상 A와 작은 집합 B를 생각하며, B의 중심(anchor)을 현재 처리 위치에 둔다.
+# 구조 요소의 1인 위치만 비교에 참여한다. 사각형·십자·타원·마름모는 같은 크기여도 결과가 다를 수 있다.
+# 이진 전경이 흰색일 때 팽창은 B가 전경에 닿는 위치로 넓히고, 침식은 B 전체가 들어가는 곳만 남긴다.
+# 명암 모폴로지에서는 이웃 최댓값/최솟값으로도 해석한다. 이웃 평균인 가우시안과 원리가 다르다.
+#
+# 2. 네 연산을 구분하기
+# 팽창 A⊕B: 작은 홈을 메우고 끊긴 부분을 잇지만 가까운 다른 물체가 붙을 수 있다.
+# 침식 A⊖B: 돌기·작은 전경을 줄이지만 가는 선이나 손가락이 사라질 수 있다.
+# 열림 A∘B=(A⊖B)⊕B: 침식 후 팽창. 작은 전경 잡음을 없애는 데 사용한다.
+# 닫힘 A•B=(A⊕B)⊖B: 팽창 후 침식. 작은 빈틈·구멍을 줄이는 데 사용한다.
+# 열림/닫힘은 첫 연산의 크기 변화를 일부 되돌리는 것이지 원래 모양·면적을 정확히 복원하는 연산이 아니다.
+# 열림으로 없어진 가는 전경은 팽창해도 원래대로 돌아오지 않을 수 있다.
+# 닫힘 역시 구조 요소보다 큰 임의의 구멍을 무조건 채우는 알고리즘은 아니다.
+#
+# 3. 반복·구조·마커의 관계
+# 같은 3x3이라도 반복을 많이 하면 더 넓은 범위를 처리한다. 경계뿐 아니라 작은 유효 형상도 달라진다.
+# 워터셰드의 침식은 확실한 내부를, 팽창 후 바깥 영역은 확실한 배경을 얻기 위한 용도이다.
+# 화면에서 전경을 검정으로 표현했다면 위의 흰 전경 기준 해석을 그대로 적용하지 않도록 확인한다.
+# 현재 예제는 알파가 모양을 담은 PNG의 알파를 이진화한 뒤 5x5 마름모로 팽창·침식·닫힘을 비교한다.
+# ==================================================================
+
+
 import cv2 as cv
 import matplotlib.pyplot as plt
 import numpy as np
@@ -21,15 +51,19 @@ imgc = cv.imread("JohnHancocksSignature.png")
 if img is None:
     sys.exit("No File exists.")
     
-print(type(img))
+# [출력 확인: 현재 서명 PNG]
+# img는 BGRA 네 채널, imgc는 BGR 세 채널이다. 알파=0은 투명, 255는 불투명이다.
+# 두 배열을 출력하면 가장자리의 0과 ...가 보인다. 생략된 내부까지 전부 0이라는 뜻은 아니다.
+# 이 파일의 BGR은 전부 0(검정)이며 서명 모양은 알파 채널에 있으므로 max(imgc)=0이다.
+print(type(img))  # 출력: <class 'numpy.ndarray'>
 
-print(img.shape)
-print(imgc.shape)
+print(img.shape)  # 출력: (525, 1920, 4)
+print(imgc.shape)  # 출력: (525, 1920, 3)
 print(img)
 print(imgc)
-print(np.max(imgc))
-print(np.max(img[:,:,3]))
-print(np.min(img[:,:,3]))
+print(np.max(imgc))  # 출력: 0 (현재 PNG의 BGR)
+print(np.max(img[:,:,3]))  # 출력: 255 (알파 최댓값)
+print(np.min(img[:,:,3]))  # 출력: 0 (알파 최솟값)
 
 cv.imshow("unchanged", img[:,:,3]) #graylevel image
 cv.waitKey()
@@ -37,6 +71,17 @@ cv.imshow("color", imgc)
 cv.waitKey()
 cv.destroyAllWindows()
 #%%
+# [서술형] 이진 모폴로지 분석
+# 관련 PPT: 영상처리_2 2~10쪽
+# 특징: 구조 요소의 모양을 이용해 흰 전경을 침식·팽창하거나 두 연산을 조합한다.
+# 장점: 작은 잡음·연결·틈을 공간적 모양 기준으로 정리할 수 있다.
+# 단점: 구조 요소와 반복 횟수에 따라 가는 형상이 사라지거나 다른 물체가 붙는다.
+# 활용: 마스크 정리, 확실한 전경/배경 마커 만들기, 작은 구조의 크기 분석.
+# 한 문장 답안: 모폴로지는 구조 요소로 영역의 모양을 처리하며 유용한 세부도 함께 변할 수 있다.
+# [계산·코드 연결]
+# 팽창: 전경 확대·작은 간격 연결 / 침식: 전경 축소·작은 돌기와 연결 제거.
+# 이진 전경 기준 팽창은 이웃 최댓값, 침식은 이웃 최솟값으로 이해한다.
+# 현재는 BGRA의 알파를 이진화한다. 검은 BGR 자체를 이진화한 결과와 구분한다.
 t, binimg=cv.threshold(img[:,:,3], 0, 255, cv.THRESH_BINARY | cv.THRESH_OTSU)
 cv.imshow("Binary", binimg)
 cv.waitKey()
@@ -44,6 +89,9 @@ cv.destroyAllWindows()
 #%%
 plt.imshow(binimg, cmap='gray') ;  plt.xticks([]) ; plt.yticks([])
 plt.show()
+# [배열 크기 예측] 높이 525에서 525//2=262이다.
+# [262:525,0:263]이므로 b.shape=(263,263). 원래 너비 1920 전체를 자른 것은 아니다.
+# 침식/팽창/닫힘은 같은 크기 배열을 반환하므로 아래 결과도 모두 (263,263)이다.
 b=binimg[binimg.shape[0]//2: binimg.shape[0],0: binimg.shape[0]//2+1]
 plt.imshow(b, cmap='gray') ; plt.xticks([]) ; plt.yticks([])
 plt.show()
@@ -53,7 +101,7 @@ plt.show()
 # 아래 closing=팽창 후 침식은 작은 틈을 잇는 연산이다. opening=침식 후 팽창과 순서가 다르다.
 se=np.uint8([[0,0,1,0,0],[0,1,1,1,0],
              [1,1,1,1,1], [0,1,1,1,0],[0,0,1,0,0]])
-print(se.shape)
+print(se.shape)  # 출력: (5, 5), 구조 요소의 높이/너비
 b_dilation = cv.dilate(b, se, iterations=1)
 plt.imshow(b_dilation, cmap='gray'), plt.xticks([]) ; plt.yticks([])
 plt.show()
@@ -62,6 +110,16 @@ b_eroision = cv.erode(b, se, iterations=1)
 plt.imshow(b_eroision, cmap='gray'), plt.xticks([]) ; plt.yticks([])
 plt.show()
 
+# [서술형] 열림과 닫힘 비교
+# 관련 PPT: 영상처리_2 4~10쪽
+# 특징: 열림은 침식→팽창, 닫힘은 팽창→침식이다. 적용 순서가 다르다.
+# 장점: 열림은 작은 전경 잡음 제거, 닫힘은 작은 틈·구멍과 끊긴 부분의 완화에 유리하다.
+# 단점: 열림은 가는 전경을 없앨 수 있고 닫힘은 가까운 물체를 붙일 수 있다.
+# 활용: 이진 마스크를 후처리할 때 잡음을 없앨지 작은 틈을 메울지에 따라 선택한다.
+# 한 문장 답안: 열림은 작은 전경을 제거하고 닫힘은 작은 빈틈을 줄이며, 둘의 순서는 서로 반대이다.
+# [계산·코드 연결]
+# 아래는 닫힘만 실행한다. 임의 크기의 내부 구멍을 모두 채우는 별도 알고리즘은 아니다.
+# iterations가 커지면 처리 범위도 커진다. b와 각 결과의 크기는 (263,263)으로 같다.
 b_closing = cv.erode(cv.dilate(b, se, iterations=1), se, iterations=1)
 plt.imshow(b_closing, cmap='gray'), plt.xticks([]) ; plt.yticks([])
 plt.show()
