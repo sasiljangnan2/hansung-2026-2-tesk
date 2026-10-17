@@ -9,6 +9,9 @@ import cv2 as cv
 import numpy as np
 import sys
 #%% ROI
+# 차선 처리 흐름 [에지 검출_1 PPT 46~52쪽]
+# Gray→Gaussian→Canny→도로 ROI→허프 선분→기울기별 평균→빨간 선 표시 순서이다.
+# 영상 크기에 맞춘 동영상 응용과 자세한 단계 설명은 lane_detection_video.py를 함께 본다.
 def region_of_interest(image):
 
     height = image.shape[0]
@@ -38,10 +41,12 @@ def average_slope_intercept(image, lines):
     if lines is None:
         return None
 
+    # 원래 실행문 유지: HoughLinesP가 (N,1,4)를 반환하면 이 반복문의 언패킹과 맞지 않는다.
+    # 동영상 파일에는 reshape(-1,4)로 통일한 예가 있으므로 반환 배열 모양을 비교한다.
     for line in lines:
         x1, y1, x2, y2 = line
         # 기울기 계산
-        if x2 == x1: #horizontal line
+        if x2 == x1: # 수직선: x 변화가 0이므로 기울기 계산 제외
             continue
         slope = (y2 - y1) / (x2 - x1)
         # 너무 수평인 선 제거

@@ -8,6 +8,9 @@ if img is None:
 
 cv.imshow("Original", img); cv.waitKey() # 원본 
 #%%
+# 색 공간 변환과 채널 분리 [영상처리_1 PPT 11~19쪽]
+# BGR을 HSV로 바꾸면 H=색상, S=채도, V=밝기 성분을 따로 다룰 수 있다.
+# uint8 HSV에서 H는 0~179, S/V는 0~255이다. 영상의 실제 최댓값이 항상 상한인 것은 아니다.
 hsv=cv.cvtColor(img, cv.COLOR_BGR2HSV)
 cv.imshow('Hsv', hsv) ; cv.waitKey() # hsv 는 hue, saturation, value 의 약자로 색상, 채도, 명도를 의미한다. 따라서 hsv 영상은 3채널 영상이 된다.
 #%%
@@ -23,6 +26,9 @@ cv.imshow('Value', v) ; cv.waitKey() # value 는 명도 정보이므로 0~255 �
 print(v.ndim)
 print(v.shape)
 print(v)
+# 채널 수정 후 복원 [영상처리_1 PPT 18쪽]
+# V를 모두 255로 바꾸고 원래 H/S와 합친다. 현재 크기 (948,1434)는 soccer.jpg 전용이다.
+# 상수 255 영상에 equalizeHist를 적용해도 대비는 생기지 않는다.
 v=np.zeros((948, 1434), np.uint8)+255
 v=cv.equalizeHist(v)
 dst=cv.merge([h,s,v])

@@ -6,6 +6,9 @@ img=cv.imread("hand_sample2.jpg")
 gray=cv.cvtColor(img, cv.COLOR_BGR2GRAY)
 
 # HSV의 색상과 채도로 피부색 검출
+# 피부색을 이용한 초기 후보 [영상처리_1 PPT 11~22쪽 / 영역 분할_2 PPT 14쪽]
+# H는 원형이어서 붉은 계열을 양 끝의 두 범위로 나누고 OR로 합친다. Lab a 조건은 AND로 추가한다.
+# 어두운 손과 배경 그림자의 색이 비슷하면 이 조건만으로 완전한 분리는 보장되지 않는다.
 hsv=cv.cvtColor(img, cv.COLOR_BGR2HSV)
 
 # 밝은 피부도 포함하고, 아래 Lab 조건으로 배경 그림자를 추가 제외
@@ -28,6 +31,9 @@ cv.waitKey(); cv.destroyAllWindows()
 
 #%% 침식·팽창으로 마커 준비
 kernel=cv.getStructuringElement(cv.MORPH_ELLIPSE, (3,3))
+# 침식·팽창으로 확실한 영역 설정 [영역 분할_2 PPT 9~12쪽]
+# fg 반복을 늘리면 손 내부 마커가 줄고, bg 팽창 반복을 늘리면 배경 마커가 손에서 더 멀어진다.
+# 두 경계 사이의 0 영역에서 워터셰드가 경계를 결정한다. 잘못된 확정 마커까지 자동 수정하는 것은 아니다.
 fg=cv.erode(binary,kernel, iterations=5)
 cv.imshow("Foreground", fg); cv.waitKey()
 
@@ -41,6 +47,9 @@ cv.imshow("Markers", markers)
 cv.waitKey()
 
 #%% 워터셰드 실행
+# 경계 계산과 표시 [영역 분할_2 PPT 10~14쪽]
+# 전경 255/배경 128/미확정 0을 int32로 넘기고 결과 -1인 픽셀을 경계로 그린다.
+# 현재 전처리는 medianBlur(중앙값)이며 GaussianBlur(가중 평균)와 다른 필터이다.
 markers=np.int32(markers)
 # 메디안 필터로 잡음을 줄인 뒤 워터셰드 실행
 blur=cv.medianBlur(img, 3)

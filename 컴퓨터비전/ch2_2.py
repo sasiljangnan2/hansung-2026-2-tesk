@@ -9,6 +9,9 @@ import cv2 as cv
 import sys
 
 #%%
+# 영상의 배열 표현 [영상처리_1 PPT 5~10쪽]
+# 배열은 [행, 열, 채널]=[y,x,BGR] 순서이다. shape는 높이·너비·채널 수를 뜻한다.
+# 그리기 함수에 넣는 좌표 (x,y)와 배열 인덱스 [y,x]를 구분한다.
 img=cv.imread('soccer.jpg')
 
 if img is None:

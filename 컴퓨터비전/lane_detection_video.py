@@ -10,6 +10,8 @@ import numpy as np
 import sys
 from pathlib import Path
 #%% ROI
+# ROI로 도로 후보만 남기기 [에지 검출_1 PPT 51~52쪽]
+# 이진 마스크와 AND하여 하늘·가로수 등 차선과 무관한 에지를 제외한다. 비율 좌표는 영상 크기에 맞춘다.
 def region_of_interest(image):
 
     height = image.shape[0]
@@ -32,6 +34,9 @@ def region_of_interest(image):
 
 #%% Classify Left/Right lane and calculate slope and intercept
 
+# 선분의 좌우 분류와 평균 직선 [에지 검출_1 PPT 46, 51쪽]
+# HoughLinesP 결과는 두 끝점이다. 영상 y축은 아래가 양수이므로 이 구도에서 왼쪽은 음의 기울기다.
+# 수평에 가까운 선분을 버리고 각 그룹의 slope/intercept 평균으로 대표선을 만든다.
 def average_slope_intercept(image, lines):
     left_lines = []
     right_lines = []
@@ -68,6 +73,8 @@ def average_slope_intercept(image, lines):
     return lane_lines
 
 #%% Extend lane to the bottom of the image
+# 대표 직선을 영상에 표시 [에지 검출_1 PPT 51쪽]
+# y=slope*x+intercept를 x=(y-intercept)/slope로 풀어 정한 위·아래 y에서 끝점을 구한다.
 def make_coordinates(image, line_parameters):
 
     slope, intercept = line_parameters
@@ -113,6 +120,9 @@ try:
         edges = cv.Canny(blur, 50, 150)
         ROI_edges = region_of_interest(edges)
 
+        # 허프 투표와 겹쳐 그리기 [에지 검출_1 PPT 37~46, 51쪽]
+        # rho/theta는 누적 공간 간격, threshold는 투표 기준이다. minLineLength는 최소 선분 길이,
+        # maxLineGap은 연결 가능한 틈이다. BGR (0,0,255)의 빨간 선을 원본에 가중 합성한다.
         lines = cv.HoughLinesP(ROI_edges, rho=2, theta=np.pi / 180,
                               threshold=50, minLineLength=40, maxLineGap=100)
         averaged_lines = average_slope_intercept(img, lines)
