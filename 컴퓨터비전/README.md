@@ -3,7 +3,7 @@
 ## VS Code에서 바로 실행
 
 1. VS Code에서 프로젝트 전체 또는 `컴퓨터비전` 폴더를 엽니다.
-2. 실행할 예제 파일(예: `ch3_3.py`)을 엽니다.
+2. 실행할 예제 파일(예: `ch3_3_이진화.py`)을 엽니다.
 3. 오른쪽 위의 ▶ **Run Python File** 버튼 또는 `Ctrl+F5`를 누릅니다. 디버깅은 `F5`로 실행합니다.
 4. 이미지 창에서 키를 누르면 다음 단계로 넘어갑니다. 마우스 그리기 예제는 이미지 창에서 `q`를 누르면 종료됩니다.
 
@@ -14,6 +14,51 @@
 `#%%` 셀은 Jupyter 확장을 설치하고 같은 가상환경을 선택한 뒤 **Run Cell**로 실행할 수 있습니다. 설정 변경 전에 열어 둔 Interactive 창은 닫고 다시 여세요.
 
 파일 선택 메뉴를 사용하려면 `run.py`를 열고 실행하세요. 새 `.py` 파일도 메뉴에 자동으로 표시됩니다.
+
+## 예제 파일 이름과 순서
+
+장 번호 뒤에 핵심 단어 하나를 붙였습니다. 예전 코드나 Word 문서의 파일명을 찾을 때는 아래 표를 보세요.
+
+| 예전 파일명 | 현재 파일명 |
+|---|---|
+| `ch1_1_intro.py` | [ch1_1_소개.py](ch1_1_소개.py) |
+| `ch2_1_opencv_basics.py` | [ch2_1_OpenCV.py](ch2_1_OpenCV.py) |
+| `ch2_2.py` | [ch2_2_픽셀.py](ch2_2_픽셀.py) |
+| `ch2_5.py` | [ch2_5_동영상.py](ch2_5_동영상.py) |
+| `ch2_6.py` | [ch2_6_그리기.py](ch2_6_그리기.py) |
+| `ch2_7.py` | [ch2_7_클릭.py](ch2_7_클릭.py) |
+| `ch2_8.py` | [ch2_8_드래그.py](ch2_8_드래그.py) |
+| `ch2_9.py` | [ch2_9_페인팅.py](ch2_9_페인팅.py) |
+| `ch3_1_soccer.py` | [ch3_1_HSV.py](ch3_1_HSV.py) |
+| `ch3_2_detect.py` | [ch3_2_풍선.py](ch3_2_풍선.py) |
+| `ch3_3.py` | [ch3_3_이진화.py](ch3_3_이진화.py) |
+| `ch3_4.py` | [ch3_4_모폴로지.py](ch3_4_모폴로지.py) |
+| `ch3_5.py` | [ch3_5_감마.py](ch3_5_감마.py) |
+| `ch3_6.py` | [ch3_6_히스토그램.py](ch3_6_히스토그램.py) |
+| `ch3_7.py` | [ch3_7_필터.py](ch3_7_필터.py) |
+| `ch3_8.py` | [ch3_8_보간.py](ch3_8_보간.py) |
+| `ch3_9.py` | [ch3_9_속도.py](ch3_9_속도.py) |
+| `ch4_1.py` | [ch4_1_Sobel.py](ch4_1_Sobel.py) |
+| `ch4_1_food_edge.py` | [ch4_1_음식에지.py](ch4_1_음식에지.py) |
+| `ch4_2.py` | [ch4_2_Canny.py](ch4_2_Canny.py) |
+| `ch4_3.py` | [ch4_3_외곽선.py](ch4_3_외곽선.py) |
+| `ch4_4.py` | [ch4_4_허프.py](ch4_4_허프.py) |
+| `ch4_4_detect_road_lane.py` | [ch4_4_정지차선.py](ch4_4_정지차선.py) |
+| `ch4_4_lane_detection_video.py` | [ch4_4_동영상차선.py](ch4_4_동영상차선.py) |
+| `ch4_5.py` | [ch4_5_SLIC.py](ch4_5_SLIC.py) |
+| `ch4_6.py` | [ch4_6_Ncut.py](ch4_6_Ncut.py) |
+| `ch4_7.py` | [ch4_7_GrabCut.py](ch4_7_GrabCut.py) |
+| `ch4_8.py` | [ch4_8_모멘트.py](ch4_8_모멘트.py) |
+| `ch4_findContour_binsryGroup_실습용.py` | [ch4_외곽선실습.py](ch4_외곽선실습.py) |
+| `ch4_Snake_astrnut.py` | [ch4_Snake.py](ch4_Snake.py) |
+| `ch4_watershed.py` | [ch4_워터셰드.py](ch4_워터셰드.py) |
+| `ch4_watershed_hand.py` | [ch4_손워터셰드.py](ch4_손워터셰드.py) |
+| `ch5_1.py` | [ch5_1_해리스직접.py](ch5_1_해리스직접.py) |
+| `ch5_2.py` | [ch5_2_해리스함수.py](ch5_2_해리스함수.py) |
+
+`run.py`는 예제 선택 메뉴이므로 이름을 유지합니다. 변경한 파일명도 메뉴에 자동으로 표시됩니다.
+
+주석에만 설명한 주제도 있으므로 자세한 구현 범위는 파일 안의 설명과 [PPT 전체 확인표](시험공부/PPT_전체_확인표.md)를 함께 보세요.
 
 ## 실행 환경
 

@@ -19,11 +19,11 @@ Created on Mon Sep 11 14:04:24 2023
 # 명암 모폴로지에서는 이웃 최댓값/최솟값으로도 해석한다. 이웃 평균인 가우시안과 원리가 다르다.
 #
 # 2. 네 연산을 구분하기
-# 팽창 A⊕B: 작은 홈을 메우고 끊긴 부분을 잇지만 가까운 다른 물체가 붙을 수 있다.
+# 팽창 A⊕B: 작은 것홈을 메우고 끊긴 부분을 잇지만 가까운 다른 물체가 붙을 수 있다.
 # 침식 A⊖B: 돌기·작은 전경을 줄이지만 가는 선이나 손가락이 사라질 수 있다.
 # 열림 A∘B=(A⊖B)⊕B: 침식 후 팽창. 작은 전경 잡음을 없애는 데 사용한다.
 # 닫힘 A•B=(A⊕B)⊖B: 팽창 후 침식. 작은 빈틈·구멍을 줄이는 데 사용한다.
-# 열림/닫힘은 첫 연산의 크기 변화를 일부 되돌리는 것이지 원래 모양·면적을 정확히 복원하는 연산이 아니다.
+# 열림/닫힘은 첫 연산의 크기 변화를 일부 되돌리는 이지 원래 모양·면적을 정확히 복원하는 연산이 아니다.
 # 열림으로 없어진 가는 전경은 팽창해도 원래대로 돌아오지 않을 수 있다.
 # 닫힘 역시 구조 요소보다 큰 임의의 구멍을 무조건 채우는 알고리즘은 아니다.
 #
@@ -44,6 +44,11 @@ import sys
 # 알파 채널을 이용한 이진 영상 [영상처리_1 PPT 15쪽 / 영상처리_2 PPT 8~10쪽]
 # IMREAD_UNCHANGED로 투명도까지 보존해야 네 번째 채널 [:,:,3]을 읽을 수 있다.
 # 일반 컬러 읽기는 BGR 3채널이므로 같은 인덱스를 사용할 수 없다.
+# [함수 사용: 입출력·창]
+# img=cv.imread(path, flags=cv.IMREAD_COLOR): 파일→배열. 기본 BGR, 읽기 실패 시 None인지 확인한다.
+# cv.imshow(winname,img): 이름이 winname인 창에 배열을 표시한다. 저장 함수는 아니다.
+# key=cv.waitKey(delay=0): GUI 이벤트·키 처리. 0은 계속 대기, 양수는 ms, 입력 없으면 보통 -1이다.
+# cv.destroyAllWindows(): OpenCV 창을 닫는다. 캡처 자원 해제는 cap.release()이다.
 img = cv.imread("JohnHancocksSignature.png", cv.IMREAD_UNCHANGED)
 
 imgc = cv.imread("JohnHancocksSignature.png")
@@ -61,8 +66,12 @@ print(img.shape)  # 출력: (525, 1920, 4)
 print(imgc.shape)  # 출력: (525, 1920, 3)
 print(img)
 print(imgc)
+# [함수 사용] value=np.max(a, axis=None)
+# axis 생략 시 전체 원소 중 최댓값, 지정 시 해당 축의 최댓값을 반환한다.
 print(np.max(imgc))  # 출력: 0 (현재 PNG의 BGR)
 print(np.max(img[:,:,3]))  # 출력: 255 (알파 최댓값)
+# [함수 사용] value=np.min(a, axis=None)
+# axis 생략 시 전체 원소 중 최솟값, 지정 시 해당 축의 최솟값을 반환한다.
 print(np.min(img[:,:,3]))  # 출력: 0 (알파 최솟값)
 
 cv.imshow("unchanged", img[:,:,3]) #graylevel image
@@ -82,6 +91,8 @@ cv.destroyAllWindows()
 # 팽창: 전경 확대·작은 간격 연결 / 침식: 전경 축소·작은 돌기와 연결 제거.
 # 이진 전경 기준 팽창은 이웃 최댓값, 침식은 이웃 최솟값으로 이해한다.
 # 현재는 BGRA의 알파를 이진화한다. 검은 BGR 자체를 이진화한 결과와 구분한다.
+# [함수 사용] t,dst=cv.threshold(src, thresh, maxval, type)
+# thresh=기준값, maxval=이진화 출력값, type=방법. t는 사용한 임계값, dst는 결과이며 OTSU는 기준을 자동 계산한다.
 t, binimg=cv.threshold(img[:,:,3], 0, 255, cv.THRESH_BINARY | cv.THRESH_OTSU)
 cv.imshow("Binary", binimg)
 cv.waitKey()
@@ -99,13 +110,19 @@ plt.show()
 # 구조 요소와 모폴로지 [영상처리_2 PPT 2~10쪽]
 # 흰색(전경)을 기준으로 팽창은 넓히고 침식은 줄인다. 여기서는 5x5 마름모를 사용한다.
 # 아래 closing=팽창 후 침식은 작은 틈을 잇는 연산이다. opening=침식 후 팽창과 순서가 다르다.
+# [함수 사용] dst=np.uint8(values)
+# 값을 8비트 부호 없는 정수로 변환한다. 안전한 범위 표시에는 먼저 clip을 고려하며 좌표값을 8비트로 제한하지 않도록 주의한다.
 se=np.uint8([[0,0,1,0,0],[0,1,1,1,0],
              [1,1,1,1,1], [0,1,1,1,0],[0,0,1,0,0]])
 print(se.shape)  # 출력: (5, 5), 구조 요소의 높이/너비
+# [함수 사용] dst=cv.dilate(src, kernel, iterations=1)
+# src=입력, kernel=구조 요소, iterations=팽창 반복 횟수. 같은 크기의 결과를 반환한다.
 b_dilation = cv.dilate(b, se, iterations=1)
 plt.imshow(b_dilation, cmap='gray'), plt.xticks([]) ; plt.yticks([])
 plt.show()
 
+# [함수 사용] dst=cv.erode(src, kernel, iterations=1)
+# src=입력, kernel=구조 요소, iterations=침식 반복 횟수. 같은 크기의 결과를 반환한다.
 b_eroision = cv.erode(b, se, iterations=1)
 plt.imshow(b_eroision, cmap='gray'), plt.xticks([]) ; plt.yticks([])
 plt.show()
