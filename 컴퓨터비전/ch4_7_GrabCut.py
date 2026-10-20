@@ -42,6 +42,7 @@ Created on Tue Sep 26 17:03:54 2023
 
 import numpy as np
 import cv2 as cv
+from cv_assets import read_image
 #%%
 # [함수 사용: 입출력·창]
 # img=cv.imread(path, flags=cv.IMREAD_COLOR): 파일→배열. 기본 BGR, 읽기 실패 시 None인지 확인한다.
@@ -49,7 +50,7 @@ import cv2 as cv
 # cv.namedWindow(winname): 마우스 콜백 등을 등록할 이름 있는 창을 만든다.
 # key=cv.waitKey(delay=0): GUI 이벤트·키 처리. 0은 계속 대기, 양수는 ms, 입력 없으면 보통 -1이다.
 # cv.destroyAllWindows(): OpenCV 창을 닫는다. 캡처 자원 해제는 cap.release()이다.
-img=cv.imread('soccer.jpg')
+img=read_image('soccer.jpg')
 # [함수 사용] dst=np.copy(src)
 # src의 배열 데이터를 복사해 독립적인 수정용 배열을 만든다. 영상에서는 src.copy()도 사용한다.
 img_show=np.copy(img) # 깊은 복사

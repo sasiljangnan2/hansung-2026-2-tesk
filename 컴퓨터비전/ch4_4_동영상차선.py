@@ -42,9 +42,9 @@ Created on Sun Sep 20 15:46:50 2026
 
 
 import cv2 as cv
+from cv_assets import open_video
 import numpy as np
 import sys
-from pathlib import Path
 #%% ROI
 # [서술형] 허프 직선과 기울기 기반 차선 분석
 # 관련 PPT: 에지 검출_1 37~46,51~52쪽
@@ -161,12 +161,11 @@ def display_lines(image, lines):
 
     return line_image
 #%% 동영상 입력
-# 실행 위치와 관계없이 이 파이썬 파일 옆의 동영상을 읽음
-folder = Path(__file__).resolve().parent
+# 코드 폴더와 상위 폴더에서 동영상을 찾는다.
 # [함수 사용] cap=cv.VideoCapture(source)
 # source=카메라 번호 또는 동영상 경로. cap.isOpened()로 열기 확인, ret,frame=cap.read()로 읽고 cap.release()로 해제한다.
 # [PPT 인자 보충] OpenCV 기본 23쪽: apiPreference=cv.CAP_ANY는 백엔드 자동 선택. cap.isOpened()는 열기 성공 여부, ret,frame=cap.read()는 다음 프레임, cap.release()는 자원 해제이다.
-cap = cv.VideoCapture(str(folder / 'second_HW_lane_detection.mp4'))
+cap = open_video("second_HW_lane_detection.mp4")
 if not cap.isOpened():
     sys.exit('No video file exists.')
 

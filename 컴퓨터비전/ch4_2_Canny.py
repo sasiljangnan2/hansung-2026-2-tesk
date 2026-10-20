@@ -49,13 +49,14 @@ Created on Tue Sep 19 11:20:02 2023
 # 첫 형식도 가우시안 평활화를 자동으로 대신한다고 가정하지 않는다. 강의 흐름처럼 필요 시 입력을 먼저 평활화한다.
 
 import cv2 as cv
+from cv_assets import read_image
 
 # [함수 사용: 입출력·창]
 # img=cv.imread(path, flags=cv.IMREAD_COLOR): 파일→배열. 기본 BGR, 읽기 실패 시 None인지 확인한다.
 # cv.imshow(winname,img): 이름이 winname인 창에 배열을 표시한다. 저장 함수는 아니다.
 # key=cv.waitKey(delay=0): GUI 이벤트·키 처리. 0은 계속 대기, 양수는 ms, 입력 없으면 보통 -1이다.
 # cv.destroyAllWindows(): OpenCV 창을 닫는다. 캡처 자원 해제는 cap.release()이다.
-img=cv.imread('soccer.jpg')
+img=read_image('soccer.jpg')
 
 # [함수 사용] dst=cv.cvtColor(src, code)
 # src=입력 영상, code=색 변환 상수. 예: BGR2GRAY·BGR2HSV·HSV2BGR. 변환 영상을 반환한다.

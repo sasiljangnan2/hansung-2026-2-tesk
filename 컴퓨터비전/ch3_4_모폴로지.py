@@ -47,6 +47,7 @@ Created on Mon Sep 11 14:04:24 2023
 # anchor=(-1,-1)은 중심이다. 영상 경계에는 바깥 픽셀 규칙(borderType/borderValue)이 필요하며 임의로 0을 넣는 경우와 기본 처리는 다를 수 있다.
 
 import cv2 as cv
+from cv_assets import read_image
 import matplotlib.pyplot as plt
 import numpy as np
 import sys
@@ -60,9 +61,9 @@ import sys
 # cv.imshow(winname,img): 이름이 winname인 창에 배열을 표시한다. 저장 함수는 아니다.
 # key=cv.waitKey(delay=0): GUI 이벤트·키 처리. 0은 계속 대기, 양수는 ms, 입력 없으면 보통 -1이다.
 # cv.destroyAllWindows(): OpenCV 창을 닫는다. 캡처 자원 해제는 cap.release()이다.
-img = cv.imread("JohnHancocksSignature.png", cv.IMREAD_UNCHANGED)
+img = read_image("JohnHancocksSignature.png", cv.IMREAD_UNCHANGED)
 
-imgc = cv.imread("JohnHancocksSignature.png")
+imgc = read_image("JohnHancocksSignature.png")
 
 if img is None:
     sys.exit("No File exists.")

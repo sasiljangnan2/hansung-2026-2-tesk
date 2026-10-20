@@ -64,6 +64,7 @@ Created on Tue Sep  5 20:54:33 2023
 # 장점은 불균일한 조명 대응, 한계는 이웃 크기·C에 대한 민감도이다. 위 예제를 추가 실행하는 파일은 아니다.
 
 import cv2 as cv
+from cv_assets import read_image
 import sys
 #%%
 # [함수 사용: 입출력·창]
@@ -71,7 +72,7 @@ import sys
 # cv.imshow(winname,img): 이름이 winname인 창에 배열을 표시한다. 저장 함수는 아니다.
 # key=cv.waitKey(delay=0): GUI 이벤트·키 처리. 0은 계속 대기, 양수는 ms, 입력 없으면 보통 -1이다.
 # cv.destroyAllWindows(): OpenCV 창을 닫는다. 캡처 자원 해제는 cap.release()이다.
-img=cv.imread('soccer.jpg')\
+img=read_image('soccer.jpg')\
 
 if img is None:
     sys.exit("No File exists.")

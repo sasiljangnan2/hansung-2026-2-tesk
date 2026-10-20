@@ -74,3 +74,30 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\컴퓨터비전\setup.ps1
 ```
 
 새 PC에서는 Python 3.13 또는 Anaconda를 먼저 설치하세요. `setup.ps1`은 사용자 폴더의 Anaconda/Miniconda, `py`, `python` 순으로 탐색합니다.
+
+## Spyder에서 실행
+
+1. 이 폴더의 `start_spyder.cmd`를 더블클릭합니다.
+2. Spyder에서 실습 `.py` 파일을 열고 `F5`를 누릅니다.
+3. `#%%`로 나뉜 셀은 `Ctrl+Enter`로 실행합니다.
+4. OpenCV 이미지 창이 열리면 해당 창을 클릭한 뒤 키를 눌러 다음 단계로 진행합니다.
+
+실행기는 이 폴더의 `.venv`에 설치한 Spyder와 CV 패키지를 사용합니다.
+설정은 `.spyder-cv`에 저장되며 시작 작업 폴더는 이 폴더입니다.
+
+기존에 설치한 다른 Spyder를 쓰려면 `Tools > Preferences > Python interpreter`에서
+이 폴더의 `.venv\Scripts\python.exe`를 선택하고 콘솔의 커널을 다시 시작하세요.
+다른 버전의 Spyder는 다른 버전의 spyder-kernels를 요구할 수 있으므로
+위 실행기를 사용하는 것이 편합니다.
+
+## 이미지와 동영상 경로
+
+파일을 읽는 모든 실습은 `cv_assets.py`의 공통 함수를 사용합니다.
+Spyder의 현재 작업 폴더 대신 `컴퓨터비전` 폴더, 그 상위 폴더 순서로 자료를 찾습니다.
+이미지는 한글 경로를 지원하며 흑백·알파 채널 읽기 옵션을 그대로 유지합니다.
+`cv_assets.py`는 실습 파일과 함께 보관하세요.
+
+현재 프로젝트에 없는 자료는 `mistyroad.jpg`, `apples.jpg`,
+`solidWhiteRight.jpg`, `slow_traffic_small.mp4`입니다.
+해당 예제를 실행하려면 수업 원본 자료를 위 두 폴더 중 하나에 넣어 주세요.
+자료가 없으면 필요한 파일명과 검색한 경로를 오류 메시지로 표시합니다.

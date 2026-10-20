@@ -38,6 +38,7 @@ Created on Tue Sep 26 10:49:25 2023
 
 
 import cv2 as cv
+from cv_assets import read_image
 import numpy as np
 
 #%% 영상 읽기 및 흑백 변환
@@ -46,7 +47,7 @@ import numpy as np
 # cv.imshow(winname,img): 이름이 winname인 창에 배열을 표시한다. 저장 함수는 아니다.
 # cv.destroyAllWindows(): OpenCV 창을 닫는다. 캡처 자원 해제는 cap.release()이다.
 # key=cv.waitKey(delay=0): GUI 이벤트·키 처리. 0은 계속 대기, 양수는 ms, 입력 없으면 보통 -1이다.
-img=cv.imread("group.jpg")
+img = read_image("group.jpg")
 # [함수 사용] dst=cv.cvtColor(src, code)
 # src=입력 영상, code=색 변환 상수. 예: BGR2GRAY·BGR2HSV·HSV2BGR. 변환 영상을 반환한다.
 # [PPT 인자 보충] 영상처리_1 16쪽: dstCn=0은 출력 채널 수 자동 결정. 출력 높이·너비와 깊이는 같고 채널 수는 변환에 따라 달라진다.

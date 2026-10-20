@@ -72,6 +72,7 @@ Created on Tue Sep 12 12:16:58 2023
 # 지역별 히스토그램 연결은 얼굴 부위의 위치 정보를 일부 유지한다. 넓은 원형 이웃·보간은 크기 변화 대응을 위한 확장 발상이다.
 
 import cv2 as cv
+from cv_assets import read_image
 import matplotlib.pyplot as plt
 import sys
 #%%
@@ -81,7 +82,7 @@ import sys
 # cv.imshow(winname,img): 이름이 winname인 창에 배열을 표시한다. 저장 함수는 아니다.
 # key=cv.waitKey(delay=0): GUI 이벤트·키 처리. 0은 계속 대기, 양수는 ms, 입력 없으면 보통 -1이다.
 # cv.destroyAllWindows(): OpenCV 창을 닫는다. 캡처 자원 해제는 cap.release()이다.
-img = cv.imread("mistyroad.jpg")
+img = read_image("mistyroad.jpg")
 
 if img is None:
     sys.exit("No File exists.")

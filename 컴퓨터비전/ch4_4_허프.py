@@ -52,6 +52,7 @@ Created on Tue Sep 19 12:32:47 2023
 # dp를 키우면 중심 해상도가 거칠어질 수 있고, minDist가 너무 작으면 중복 원, 너무 크면 가까운 원 누락이 생긴다.
 
 import cv2 as cv
+from cv_assets import read_image
 import numpy as np
 #%%
 
@@ -60,7 +61,7 @@ import numpy as np
 # cv.imshow(winname,img): 이름이 winname인 창에 배열을 표시한다. 저장 함수는 아니다.
 # key=cv.waitKey(delay=0): GUI 이벤트·키 처리. 0은 계속 대기, 양수는 ms, 입력 없으면 보통 -1이다.
 # cv.destroyAllWindows(): OpenCV 창을 닫는다. 캡처 자원 해제는 cap.release()이다.
-img=cv.imread('apples.jpg')
+img=read_image('apples.jpg')
 cv.imshow('Apple', img)
 
 cv.waitKey()
