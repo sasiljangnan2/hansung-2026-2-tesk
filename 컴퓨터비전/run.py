@@ -9,7 +9,7 @@ HERE = Path(__file__).resolve().parent
 
 
 def main():
-    scripts = sorted(p for p in HERE.glob('*.py') if p.name != Path(__file__).name)
+    scripts = sorted(p for p in HERE.glob('*.py') if p.name not in {Path(__file__).name, 'cv_assets.py'})
     if len(sys.argv) > 1:
         target = Path(sys.argv[1]).name
         if not target.endswith('.py'):

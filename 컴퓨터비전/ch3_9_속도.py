@@ -41,6 +41,7 @@ Created on Tue Sep 19 16:38:26 2023
 #endregion
 
 import cv2 as cv
+from cv_assets import read_image
 import numpy as np
 import sys
 import time
@@ -69,7 +70,7 @@ def my_cvtGray2(bar_img):
 #%%
 # [함수 사용: 입출력·창]
 # img=cv.imread(path, flags=cv.IMREAD_COLOR): 파일→배열. 기본 BGR, 읽기 실패 시 None인지 확인한다.
-img = cv.imread("girl_laughing.jpg")
+img = read_image("girl_laughing.jpg")
 if img is None:
     sys.exit("No File exists.")
 

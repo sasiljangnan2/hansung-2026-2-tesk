@@ -6,6 +6,7 @@ Created on Tue Aug 29 20:04:22 2023
 """
 
 import cv2 as cv
+from cv_assets import open_video
 import sys
 import numpy as np
 
@@ -13,7 +14,7 @@ import numpy as np
 # [함수 사용] cap=cv.VideoCapture(source)
 # source=카메라 번호 또는 동영상 경로. cap.isOpened()로 열기 확인, ret,frame=cap.read()로 읽고 cap.release()로 해제한다.
 # [PPT 인자 보충] OpenCV 기본 23쪽: apiPreference=cv.CAP_ANY는 백엔드 자동 선택. cap.isOpened()는 열기 성공 여부, ret,frame=cap.read()는 다음 프레임, cap.release()는 자원 해제이다.
-cap=cv.VideoCapture('slow_traffic_small.mp4')
+cap=open_video('slow_traffic_small.mp4')
 if not cap.isOpened():
     sys.exit("연결 실패")
     
