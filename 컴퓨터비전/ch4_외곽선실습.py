@@ -109,7 +109,7 @@ cv.destroyAllWindows()
 # m00이 0이면 중심을 나눌 수 없으므로 퇴화한 외곽선은 별도 확인이 필요하다.
 # [함수 사용] m=cv.moments(array, binaryImage=False)
 # array=외곽선 또는 단일 채널 영상. 모멘트 딕셔너리를 반환한다. 영상에서 binaryImage=True면 0이 아닌 픽셀을 1로 센다.
-m=cv.moments(lcontours[0])
+m=cv.moments(lcontours[1])
 # [출력 확인: 현재 첫 번째 lcontours, 영상/버전 변경 시 번호·수치는 달라질 수 있음]
 # arcLength = 170.6690467596054
 # Area: 1005.5
@@ -120,10 +120,10 @@ m=cv.moments(lcontours[0])
 # 외곽선으로 구한 면적이므로 .5 같은 소수도 가능하며 픽셀 개수와 동일한 양이 아니다.
 # [함수 사용] length=cv.arcLength(curve, closed)
 # curve=점 배열, closed=True이면 끝점과 시작점도 연결한다. 점 개수가 아니라 거리 합인 실수 길이를 반환한다.
-print(cv.arcLength(lcontours[0], True))
+print(cv.arcLength(lcontours[1], True))
 # [함수 사용] area=cv.contourArea(contour, oriented=False)
 # contour=외곽선 점 배열. 둘러싼 다각형 면적을 실수로 반환하며 oriented=True이면 방향에 따른 부호를 유지한다.
-print("Area:", cv.contourArea(lcontours[0])); 
+print("Area:", cv.contourArea(lcontours[1])); 
 print("center of x, y", m['m10']/m['m00'], m['m01']/m['m00'])
 print("mom_Area", m['m00']); print("sum of x, y", m['m10'], m['m01'])
 
@@ -132,7 +132,7 @@ print("mom_Area", m['m00']); print("sum of x, y", m['m10'], m['m01'])
 # 기존 실행문을 유지하고 차이를 학습 주석으로 표시했다.
 # [함수 사용] x,y,w,h=cv.boundingRect(points)
 # 점 배열 또는 0이 아닌 픽셀을 감싸는 축에 평행한 사각형을 반환한다. w·h는 끝 좌표가 아니라 너비·높이이다.
-r0=cv.boundingRect(contours[0])
+r0=cv.boundingRect(contours[1])
 # [함수 사용] cv.rectangle(img, pt1, pt2, color, thickness=1)
 # pt1·pt2=(x,y) 꼭짓점, color=BGR 색. img에 그리며 -1은 채우기이다. (x,y,w,h) 사각형 인자 형식도 있다.
 # [PPT 인자 보충] OpenCV 기본 30쪽: lineType은 선 연결·안티앨리어싱, shift는 좌표의 소수 비트 수. thickness<0이면 채우며 img를 직접 수정한다.

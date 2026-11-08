@@ -36,7 +36,7 @@ import sys
 # cv.imshow(winname,img): 이름이 winname인 창에 배열을 표시한다. 저장 함수는 아니다.
 # key=cv.waitKey(delay=0): GUI 이벤트·키 처리. 0은 계속 대기, 양수는 ms, 입력 없으면 보통 -1이다.
 # cv.destroyAllWindows(): OpenCV 창을 닫는다. 캡처 자원 해제는 cap.release()이다.
-img=read_image('food.jpg')
+img=read_image('puppy.bmp')
 if img is None:
     sys.exit('No File exists.')
 
@@ -73,10 +73,10 @@ gradient_direction=np.degrees(np.arctan2(grad_y, grad_x))
 # 실제 에지 접선은 그레디언트에 90도를 더한 11.30994도(180도 주기)이다.
 # convertScaleAbs 후에는 dy의 - 부호가 없어지므로 방향 계산에 그 표시 영상을 사용하면 안 된다.
 # 아래 print는 원래 강도를 출력한다. 뒤에 0~255로 정규화한 화면값을 출력하는 것이 아니다.
-print('dy:', grad_y[30,40])  # 출력: dy: -5.0
-print('dx:', grad_x[30,40])  # 출력: dx: 1.0
-print('edge strength:', edge_strength[30,40])  # 출력: edge strength: 5.0990195
-print('gradient direction (degrees):', gradient_direction[30,40])  # 출력: gradient direction (degrees): -78.69006
+print('dy:', grad_y[130, 180])  # 출력: dy: -5.0
+print('dx:', grad_x[130, 180])  # 출력: dx: 1.0
+print('edge strength:', edge_strength[130, 180])  # 출력: edge strength: 5.0990195
+print('gradient direction (degrees):', gradient_direction[130, 180])  # 출력: gradient direction (degrees): -78.69006
 
 # 출력용 에지 강도 맵을 0~255로 변환
 # [함수 사용] value=np.max(a, axis=None)
