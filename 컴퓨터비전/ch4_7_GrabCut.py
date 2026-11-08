@@ -35,6 +35,7 @@ Created on Tue Sep 26 17:03:54 2023
 
 import numpy as np
 import cv2 as cv
+from pathlib import Path
 #%%
 # [함수 사용: 입출력·창]
 # img=cv.imread(path, flags=cv.IMREAD_COLOR): 파일→배열. 기본 BGR, 읽기 실패 시 None인지 확인한다.
@@ -42,7 +43,11 @@ import cv2 as cv
 # cv.namedWindow(winname): 마우스 콜백 등을 등록할 이름 있는 창을 만든다.
 # key=cv.waitKey(delay=0): GUI 이벤트·키 처리. 0은 계속 대기, 양수는 ms, 입력 없으면 보통 -1이다.
 # cv.destroyAllWindows(): OpenCV 창을 닫는다. 캡처 자원 해제는 cap.release()이다.
-img=cv.imread('soccer.jpg')
+# 실행 위치와 한글 경로에 관계없이 프로젝트의 사진을 읽는다.
+image_path=Path(__file__).resolve().parents[1]/'soccer.jpg'
+img=cv.imdecode(np.frombuffer(image_path.read_bytes(), np.uint8), cv.IMREAD_COLOR)
+if img is None:
+    raise ValueError(f'영상을 읽을 수 없습니다: {image_path}')
 # [함수 사용] dst=np.copy(src)
 # src의 배열 데이터를 복사해 독립적인 수정용 배열을 만든다. 영상에서는 src.copy()도 사용한다.
 img_show=np.copy(img) # 깊은 복사
@@ -74,10 +79,10 @@ def painting(event, x, y, flags, param):
     elif event==cv.EVENT_RBUTTONDOWN:
         cv.circle(img_show, (x,y), BrushSiz, RColor, -1)
         cv.circle(mask, (x,y), BrushSiz, cv.GC_BGD, -1)
-    elif event==cv.EVENT_MOUSEMOVE and flags==cv.EVENT_FLAG_LBUTTON:
+    elif event==cv.EVENT_MOUSEMOVE and flags & cv.EVENT_FLAG_LBUTTON:
         cv.circle(img_show, (x,y), BrushSiz, LColor, -1)
         cv.circle(mask, (x,y), BrushSiz, cv.GC_FGD, -1)
-    elif event==cv.EVENT_MOUSEMOVE and flags==cv.EVENT_FLAG_RBUTTON:
+    elif event==cv.EVENT_MOUSEMOVE and flags & cv.EVENT_FLAG_RBUTTON:
         cv.circle(img_show, (x,y), BrushSiz, RColor, -1)
         cv.circle(mask, (x,y), BrushSiz, cv.GC_BGD, -1)
         
@@ -88,10 +93,26 @@ cv.namedWindow("Painting")
 # [함수 사용] cv.setMouseCallback(winname, onMouse, param=None)
 # winname=창 이름, onMouse=콜백 함수 자체. 이벤트가 나면 onMouse(event,x,y,flags,param)를 호출하도록 등록한다.
 cv.setMouseCallback("Painting", painting)
+cv.imshow("Painting", img_show)
+print('왼쪽 드래그=남길 부분 / 오른쪽 드래그=배경 / Q=분할 실행 / Esc=취소')
 
 
 while(True):
-    if cv.waitKey(1)==ord('q'):
+    key=cv.waitKey(20) & 0xff
+    try:
+        closed=cv.getWindowProperty("Painting", cv.WND_PROP_VISIBLE)<1
+    except cv.error:
+        closed=True
+    if key==27 or closed:
+        cv.destroyAllWindows()
+ ㄴ       raise SystemExit
+    if key in (ord('q'), ord('Q')):
+        if not np.any((mask==cv.GC_FGD)|(mask==cv.GC_PR_FGD)):
+            print('남길 부분을 왼쪽 버튼으로 칠한 뒤 Q를 누르세요.')
+            continue
+        if not np.any((mask==cv.GC_BGD)|(mask==cv.GC_PR_BGD)):
+            print('배경을 오른쪽 버튼으로 칠한 뒤 Q를 누르세요.')
+            continue
         break
     
 background=np.zeros((1,65), np.float64)
