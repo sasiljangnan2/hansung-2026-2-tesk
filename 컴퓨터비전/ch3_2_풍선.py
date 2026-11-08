@@ -45,7 +45,7 @@ cv.imshow("Original", img) ; cv.waitKey()
 hsv = cv.cvtColor(img, cv.COLOR_BGR2HSV)
 # [함수 사용] mask=cv.inRange(src, lowerb, upperb)
 # 각 채널의 하한·상한을 모두 만족하면 255, 아니면 0인 uint8 마스크를 반환한다. 경계값도 포함한다.
-mask = cv.inRange(hsv, (10, 60, 50), (25, 255, 255))
+mask = cv.inRange(hsv, (15, 60, 50), (25, 255, 255))
 # [함수 사용] a=np.full_like(src, fill_value)
 # src와 같은 shape·dtype으로 fill_value를 채운 배열을 반환한다. np.full_like(img,255)는 흰 배경 준비이다.
 dst = np.full_like(img, 255) 
