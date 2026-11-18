@@ -15,6 +15,8 @@
 
 파일 선택 메뉴를 사용하려면 `run.py`를 열고 실행하세요. 새 `.py` 파일도 메뉴에 자동으로 표시됩니다.
 
+7장 예제(`ch7_2.py`, `ch7_4.py`)는 같은 가상환경의 TensorFlow를 사용합니다. `ch7_2.py`의 첫 SGD 학습은 중간 출력 없이 진행됩니다.
+
 ## 예제 파일 이름과 순서
 
 장 번호 뒤에 핵심 단어 하나를 붙였습니다. 예전 코드나 Word 문서의 파일명을 찾을 때는 아래 표를 보세요.
@@ -85,8 +87,8 @@
 
 ## 실행 환경
 
-- Python 3.13 기반 가상환경: `컴퓨터비전/.venv`
-- 패키지: `requirements.txt`에 고정된 OpenCV, NumPy, Matplotlib, IPython/Jupyter 등
+- Python 3.12 기반 가상환경: `컴퓨터비전/.venv`
+- 패키지: `requirements.txt`에 고정된 OpenCV, NumPy, Matplotlib, TensorFlow, IPython/Jupyter 등
 - 이미지 파일은 프로젝트 최상위 폴더에 그대로 두세요.
 - 가상환경은 Git에 포함하지 않습니다.
 
@@ -96,7 +98,7 @@
 powershell -NoProfile -ExecutionPolicy Bypass -File .\컴퓨터비전\setup.ps1
 ```
 
-새 PC에서는 Python 3.13 또는 Anaconda를 먼저 설치하세요. `setup.ps1`은 사용자 폴더의 Anaconda/Miniconda, `py`, `python` 순으로 탐색합니다.
+새 PC에서는 Python 3.12 설치를 권장합니다. `setup.ps1`은 사용자 폴더의 Anaconda/Miniconda, `py`, `python` 순으로 탐색합니다.
 
 ## Spyder에서 실행
 
